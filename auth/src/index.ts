@@ -1,5 +1,7 @@
 import express from "express";
 import "express-async-errors";
+import mongoose from "mongoose";
+
 import { healthCheckRouter } from "./routes/health-check";
 import { currentUserRouter } from "./routes/current-user";
 import { signInRouter } from "./routes/signin";
@@ -25,6 +27,20 @@ app.all("*", () => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`running on port ${PORT}!!!`);
-});
+const start = async () => {
+  try {
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`running on port ${PORT}!!!`);
+  });
+};
+
+start();
