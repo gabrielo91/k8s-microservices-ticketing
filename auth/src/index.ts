@@ -22,6 +22,7 @@ app.use(
     secure: true,
   })
 );
+
 app.use(healthCheckRouter);
 app.use(currentUserRouter);
 app.use(signInRouter);
