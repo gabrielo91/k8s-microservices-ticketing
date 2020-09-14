@@ -1,0 +1,54 @@
+import request from "supertest";
+import { app } from "../../app";
+
+it("Returns a 2001 on successful signup", async () => {
+  return request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@test.com",
+      password: "password",
+    })
+    .expect(201);
+});
+
+it("returns a 400 with an invalid email", () => {
+  return request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "invalid-test",
+      password: "password",
+    })
+    .expect(400);
+});
+
+it("returns a 400 with an invalid password", () => {
+  return request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "invalid-test",
+      password: "1",
+    })
+    .expect(400);
+});
+
+it("returns a 400 with missing email and password", () => {
+  return request(app).post("/api/users/signup").send({}).expect(400);
+});
+
+it("disallows duplicate emails", async () => {
+  await request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@test.com",
+      password: "password",
+    })
+    .expect(201);
+
+  await request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@test.com",
+      password: "password",
+    })
+    .expect(400);
+});
