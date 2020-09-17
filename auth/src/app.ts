@@ -11,14 +11,13 @@ import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
 
 const app = express();
-const PORT = 3000 || process.env.PORT;
 
 app.set("trust proxy", true);
 app.use(express.json());
 app.use(
   cookieSession({
     signed: false,
-    secure: true,
+    secure: process.env.NODE_ENV !== "test",
   })
 );
 
