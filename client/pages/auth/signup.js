@@ -1,12 +1,11 @@
-import { useState } from "react";
-import axios from "axios";
-
+import { useState, useEffect } from "react";
+import Router from "next/router";
 import useRequest from "../../hooks/useRequest";
 
-export default () => {
+const signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { doRequest, errors } = useRequest({
+  const { doRequest, success, errors } = useRequest({
     url: "/api/users/signup",
     body: { email, password },
     method: "POST",
@@ -16,6 +15,12 @@ export default () => {
     event.preventDefault();
     doRequest();
   };
+
+  useEffect(() => {
+    if (success) {
+      Router.push("/");
+    }
+  }, [success]);
 
   return (
     <form onSubmit={onSubmit}>
@@ -45,3 +50,5 @@ export default () => {
     </form>
   );
 };
+
+export default signup;
