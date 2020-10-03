@@ -1,22 +1,28 @@
 import axios from "axios";
 
 const LandingPage = ({ currentUser }) => {
-  <h1>Hello from landing</h1>;
+  console.log(currentUser);
+  return <h1>Hello from landing</h1>;
 };
 
-LandingPage.getInitialProps = async () => {
-  let response;
-
+LandingPage.getInitialProps = async ({ req }) => {
   if (typeof window === "undefined") {
-    // we are in server
+    // we are on the server
     // request should be performed to nginx-ingress ...
-    response = await axios.get("api/users/current-user");
+    const { data } = await axios.get(
+      // Remember SERVICE_NAME.NAMESPACE.svc.cluster.local
+      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/current-user",
+      {
+        headers: req.headers,
+      }
+    );
+
+    return data;
   } else {
     // we are in browser
+    const { data } = await axios.get("api/users/current-user");
+    return data;
   }
-  response = await axios.get("api/users/current-user");
-
-  return response.data;
 };
 
 export default LandingPage;
