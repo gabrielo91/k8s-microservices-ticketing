@@ -9,12 +9,17 @@ const start = async () => {
     throw new Error("JWT_KEY must be defined");
   }
 
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI must be defined");
+  }
+
   try {
-    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
+    console.log("Tickets connected to mongo DB");
   } catch (error) {
     console.error(error);
   }
