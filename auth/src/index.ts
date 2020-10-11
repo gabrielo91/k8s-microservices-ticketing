@@ -2,7 +2,7 @@ import "express-async-errors";
 import mongoose from "mongoose";
 import { app } from "./app";
 
-const PORT = 3000 || process.env.PORT;
+const PORT = 3000;
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
