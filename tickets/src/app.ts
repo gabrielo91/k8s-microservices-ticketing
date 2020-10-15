@@ -4,6 +4,8 @@ import cookieSession from "cookie-session";
 
 import { errorHandler, NotFoundError } from "@gb-tickets/common";
 
+import { healthCheckRouter } from "./routes/healtcheck";
+
 const app = express();
 
 app.set("trust proxy", true);
@@ -15,9 +17,7 @@ app.use(
   })
 );
 
-app.get("/api/tickets/health-check", (req, res) => {
-  return res.send({ status: "ok" });
-});
+app.use(healthCheckRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
