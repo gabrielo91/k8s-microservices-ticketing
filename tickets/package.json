@@ -9,13 +9,16 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ]
   },
   "keywords": [],
   "author": "Gabriel <gabrielo_9103@hotmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@gb-tickets/common": "^1.0.12",
+    "@gb-tickets/common": "^1.0.13",
     "@types/express": "^4.17.8",
     "@types/mongoose": "^5.7.36",
     "express": "^4.17.1",

@@ -2,9 +2,10 @@ import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
 
-import { errorHandler, NotFoundError } from "@gb-tickets/common";
+import { currentUser, errorHandler, NotFoundError } from "@gb-tickets/common";
 
 import { healthCheckRouter } from "./routes/healtcheck";
+import { createTicketsRouter } from "./routes/create";
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(
 );
 
 app.use(healthCheckRouter);
+app.use(currentUser);
+app.use(createTicketsRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
