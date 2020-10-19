@@ -1,28 +1,30 @@
-import express from "express";
-import "express-async-errors";
-import cookieSession from "cookie-session";
+import express from 'express';
+import 'express-async-errors';
+import cookieSession from 'cookie-session';
 
-import { currentUser, errorHandler, NotFoundError } from "@gb-tickets/common";
+import { currentUser, errorHandler, NotFoundError } from '@gb-tickets/common';
 
-import { healthCheckRouter } from "./routes/healtcheck";
-import { createTicketsRouter } from "./routes/create";
+import { healthCheckRouter } from './routes/healtcheck';
+import { createTicketsRouter } from './routes/create';
+import { getTicketsRouter } from './routes/get';
 
 const app = express();
 
-app.set("trust proxy", true);
+app.set('trust proxy', true);
 app.use(express.json());
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== "test",
+    secure: process.env.NODE_ENV !== 'test',
   })
 );
 
 app.use(healthCheckRouter);
 app.use(currentUser);
 app.use(createTicketsRouter);
+app.use(getTicketsRouter);
 
-app.all("*", () => {
+app.all('*', () => {
   throw new NotFoundError();
 });
 
