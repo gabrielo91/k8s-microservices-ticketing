@@ -1,67 +1,83 @@
-import request from "supertest";
-import { app } from "../../app";
+import request from 'supertest';
+import { app } from '../../app';
+import { Ticket } from '../../models/ticket';
 
-const newTicket = { title: "foo", price: "foo" };
+const newTicket = { title: 'foo', price: 10 };
 
-describe("Test tickets routes", () => {
-  it("has a route handler listening to /api/tickets for post requests", async () => {
-    const response = await request(app).post("/api/tickets").send(newTicket);
+describe('Test tickets routes', () => {
+  it('has a route handler listening to /api/tickets for post requests', async () => {
+    const response = await request(app).post('/api/tickets').send(newTicket);
     expect(response.status).not.toEqual(404);
   });
-  it("can only be accessed if the user is signed in", async () => {
-    await request(app).post("/api/tickets").send(newTicket).expect(401);
+
+  it('can only be accessed if the user is signed in', async () => {
+    await request(app).post('/api/tickets').send(newTicket).expect(401);
   });
-  it("returns a status other than 401 if the user is signed in", async () => {
+
+  it('returns a status other than 401 if the user is signed in', async () => {
     const response = await request(app)
-      .post("/api/tickets")
-      .set("Cookie", global.signin())
+      .post('/api/tickets')
+      .set('Cookie', global.signin())
       .send(newTicket);
 
     expect(response.status).not.toEqual(401);
   });
 
-  it("return error if an invalid price is provided", async () => {
+  it('return error if an invalid price is provided', async () => {
     const response = await request(app)
-      .post("/api/tickets")
-      .set("Cookie", global.signin())
+      .post('/api/tickets')
+      .set('Cookie', global.signin())
       .send({
-        ticket: "",
+        ticket: '',
         price: 10,
       })
       .expect(400);
 
     const response2 = await request(app)
-      .post("/api/tickets")
-      .set("Cookie", global.signin())
+      .post('/api/tickets')
+      .set('Cookie', global.signin())
       .send({
         price: 10,
       })
       .expect(400);
   });
 
-  it("return error in an invalid price is provided", async () => {
+  it('return error in an invalid price is provided', async () => {
     const response = await request(app)
-      .post("/api/tickets")
-      .set("Cookie", global.signin())
+      .post('/api/tickets')
+      .set('Cookie', global.signin())
       .send({
-        ticket: "my-ticket",
+        ticket: 'my-ticket',
         price: -10,
       })
       .expect(400);
 
     const response2 = await request(app)
-      .post("/api/tickets")
-      .set("Cookie", global.signin())
+      .post('/api/tickets')
+      .set('Cookie', global.signin())
       .send({
-        ticket: "my-ticket",
+        ticket: 'my-ticket',
       })
       .expect(400);
   });
-  /**
-  it("creates a ticket with valid inputs", async () => {
-    const response = await request(app).get("/api/tickets/1").expect(200);
-    expect(response.body).toEqual({});
+
+  it('creates a ticket with valid inputs', async () => {
+    let tickets = await Ticket.find({});
+    expect(tickets.length).toEqual(0);
+
+    const response = await request(app)
+      .post('/api/tickets')
+      .set('Cookie', global.signin())
+      .send(newTicket)
+      .expect(201);
+
+    tickets = await Ticket.find({});
+    expect(tickets.length).toEqual(1);
+    expect(tickets[0].title).toEqual('foo');
+    expect(tickets[0].price).toEqual(10);
   });
+
+  /**
 
   it("should retrieve all tickets", async () => {
     const response = await request(app).get("/api/tickets").expect(200);
