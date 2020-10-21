@@ -7,6 +7,7 @@ import { currentUser, errorHandler, NotFoundError } from '@gb-tickets/common';
 import { healthCheckRouter } from './routes/healtcheck';
 import { createTicketsRouter } from './routes/create';
 import { getTicketsRouter } from './routes/get';
+import { indexRouter } from './routes/';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(healthCheckRouter);
 app.use(currentUser);
 app.use(createTicketsRouter);
 app.use(getTicketsRouter);
+app.use(indexRouter);
 
 app.all('*', () => {
   throw new NotFoundError();
