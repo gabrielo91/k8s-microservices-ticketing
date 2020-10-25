@@ -24,15 +24,23 @@ router.put(
   validateRequest,
   async (req: Request, res: Response) => {
     const { params } = req;
-    const ticket = await Ticket.findById(params.id);
+    const { title, price } = req.body;
+    let ticket = await Ticket.findById(params.id);
 
     if (!ticket) {
       throw new NotFoundError();
     }
 
     if (ticket.userId !== req.currentUser!.id) {
-      throw NotAuthorizedError;
+      throw new NotAuthorizedError();
     }
+
+    ticket.set({
+      title,
+      price,
+    });
+
+    await ticket.save();
 
     res.send(ticket);
   }
