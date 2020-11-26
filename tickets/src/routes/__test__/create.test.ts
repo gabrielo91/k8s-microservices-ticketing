@@ -2,6 +2,8 @@ import request from 'supertest';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 
+jest.mock('../../nats-wrapper.ts');
+
 const newTicket = { title: 'foo', price: 10 };
 
 describe('Test create ticket route', () => {
