@@ -27,7 +27,7 @@ router.put(
   async (req: Request, res: Response) => {
     const { params } = req;
     const { title, price } = req.body;
-    let ticket = await Ticket.findById(params.id);
+    const ticket = await Ticket.findById(params.id);
 
     if (!ticket) {
       throw new NotFoundError();
