@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { requireAuth, NotFoundError } from '@gb-tickets/common';
 import { Order, OrderStatus } from '../models/order';
+import { natsWrapper } from '../nats-wrapper';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 
 const router = express.Router();
 
@@ -22,6 +24,12 @@ router.patch(
     updatedOrder.status = OrderStatus.Cancelled;
 
     updatedOrder.save();
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: updatedOrder.id,
+      ticket: {
+        id: updatedOrder.ticket.id,
+      },
+    });
 
     res.send(updatedOrder);
   }
