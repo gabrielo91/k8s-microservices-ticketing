@@ -15,7 +15,7 @@ describe('Test create ticket route', () => {
     await request(app).post('/api/tickets').send(newTicket).expect(401);
   });
 
-  it('returns a status other than 401 if the user is signed in', async () => {
+  it('returns a status other than 401 if the user is not signed in', async () => {
     const response = await request(app)
       .post('/api/tickets')
       .set('Cookie', global.signin())

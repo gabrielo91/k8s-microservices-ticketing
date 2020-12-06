@@ -48,12 +48,9 @@ router.post(
       expiresAt: expiration,
       ticket,
     });
-
-    await order.save;
+    await order.save();
 
     // Publish an event saying that an order was created
-
-    //TODO: write tests for this
 
     res.status(201).send(order);
   }
