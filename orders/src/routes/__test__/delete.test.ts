@@ -51,6 +51,6 @@ describe('cancel an specific order', () => {
       .set('Cookie', userOne)
       .expect(200);
 
-    expect(natsWrapper.client.publish).toHaveBeenCalled();
+    expect(natsWrapper.client.publish).toHaveBeenCalled();g
   });
 });

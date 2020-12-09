@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Order, OrderStatus } from './order';
 
 interface TicketAttrs {
+  id: string;
   title: string;
   price: number;
   version: number;
@@ -39,11 +40,17 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
-// statics provides access to the general model itself
+// statics provides access to the general model itself, the class
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
-  return new Ticket(attrs);
+  return new Ticket({
+    _id: attrs.id,
+    title: attrs.title,
+    price: attrs.title,
+    version: attrs.version,
+  });
 };
 
+// methods provides access to each instance
 ticketSchema.methods.isReserved = async function () {
   // this === the document that we just called 'isReserved'
   const existingOrder = await Order.findOne({
