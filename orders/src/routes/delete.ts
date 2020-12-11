@@ -26,6 +26,7 @@ router.patch(
     updatedOrder.save();
     new OrderCancelledPublisher(natsWrapper.client).publish({
       id: updatedOrder.id,
+      version: updatedOrder.version,
       ticket: {
         id: updatedOrder.ticket.id,
       },

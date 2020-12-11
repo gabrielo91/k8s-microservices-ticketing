@@ -31,6 +31,7 @@ router.post(
       title: title.title,
       price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version,
     });
     await res.status(201).send(ticket);
   }
