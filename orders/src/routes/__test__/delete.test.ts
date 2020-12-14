@@ -1,4 +1,5 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 import { OrderStatus } from '../../models/order';
@@ -6,9 +7,9 @@ import { natsWrapper } from '../../nats-wrapper';
 
 const buildTicket = async () => {
   return Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: 'foo',
     price: 45,
-    version: 1,
   }).save();
 };
 
@@ -51,6 +52,6 @@ describe('cancel an specific order', () => {
       .set('Cookie', userOne)
       .expect(200);
 
-    expect(natsWrapper.client.publish).toHaveBeenCalled();g
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
   });
 });

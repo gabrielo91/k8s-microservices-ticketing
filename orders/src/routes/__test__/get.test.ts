@@ -1,13 +1,13 @@
 import request from 'supertest';
-
+import mongoose from 'mongoose';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 
 const buildTicket = async () => {
   return Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: 'foo',
     price: 45,
-    version: 1,
   }).save();
 };
 

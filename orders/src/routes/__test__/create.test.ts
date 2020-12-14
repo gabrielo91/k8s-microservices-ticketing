@@ -36,7 +36,11 @@ describe('Test create order route', () => {
   });
 
   it('returns error 400 if selected ticket is already reserved', async () => {
-    const ticket = new Ticket({ title: 'foo', price: 32 });
+    const ticket = Ticket.build({
+      id: mongoose.Types.ObjectId().toHexString(),
+      title: 'foo',
+      price: 32,
+    });
     await ticket.save();
 
     const reservedOrder = Order.build({
@@ -60,7 +64,11 @@ describe('Test create order route', () => {
   });
 
   it('reserves a ticket', async () => {
-    const ticket = new Ticket({ title: 'foo', price: 32 });
+    const ticket = Ticket.build({
+      id: mongoose.Types.ObjectId().toHexString(),
+      title: 'foo',
+      price: 32,
+    });
     await ticket.save();
 
     await request(app)
@@ -71,7 +79,11 @@ describe('Test create order route', () => {
   });
 
   it('emits an order created event', async () => {
-    const ticket = new Ticket({ title: 'foo', price: 32 });
+    const ticket = Ticket.build({
+      id: mongoose.Types.ObjectId().toHexString(),
+      title: 'foo',
+      price: 32,
+    });
     await ticket.save();
 
     await request(app)
