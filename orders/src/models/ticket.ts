@@ -9,6 +9,7 @@ interface TicketAttrs {
 }
 
 export interface TicketDoc extends mongoose.Document {
+  id: string;
   ticket: string;
   title: string;
   price: number;
