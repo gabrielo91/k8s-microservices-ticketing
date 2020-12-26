@@ -18,7 +18,7 @@
   "author": "Gabriel <gabrielo_9103@hotmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@gb-tickets/common": "^1.0.27",
+    "@gb-tickets/common": "^1.0.28",
     "@types/bull": "^3.14.4",
     "bull": "^3.20.0",
     "node-nats-streaming": "^0.3.2",
