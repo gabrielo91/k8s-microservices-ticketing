@@ -13,6 +13,7 @@ interface OrderAttrs {
 
 // Properties that an order has
 interface OrderDoc extends mongoose.Document {
+  id: string;
   version: number;
   userId: string;
   price: number;
@@ -22,6 +23,7 @@ interface OrderDoc extends mongoose.Document {
 // Properties that model itself contains
 interface OrderModel extends mongoose.Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc;
+  findByEvent(event: { id: string; version: number }): Promise<OrderDoc | null>;
 }
 
 const orderSchema = new mongoose.Schema(
@@ -63,6 +65,13 @@ orderSchema.statics.build = (attrs: OrderAttrs) => {
 
 orderSchema.set('versionKey', 'version');
 orderSchema.plugin(updateIfCurrentPlugin);
+
+orderSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+  return Order.findOne({
+    _id: event.id,
+    version: event.version - 1,
+  });
+};
 
 const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 
