@@ -5,6 +5,7 @@ import cookieSession from 'cookie-session';
 import { currentUser, errorHandler, NotFoundError } from '@gb-tickets/common';
 
 import { healthCheckRouter } from './routes/healtcheck';
+import { CreateChargeRouter } from './routes/create';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(
 
 app.use(healthCheckRouter);
 app.use(currentUser);
+app.use(CreateChargeRouter);
 
 app.all('*', () => {
   throw new NotFoundError();
