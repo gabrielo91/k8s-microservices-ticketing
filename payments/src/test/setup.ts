@@ -13,6 +13,9 @@ declare global {
 
 jest.mock('../nats-wrapper.ts');
 
+process.env.STRIPE_KEY =
+  'sk_test_51I3vuYKtWrdkCqYxq6OBJYfC9yanUnteLWgUYZKAHY03YmuMbPatox7Tfk5kI7UQreXEsW0vcULmRch5QrB2Ro4b0095S2Lofs';
+
 let mongo: any;
 
 beforeAll(async () => {
