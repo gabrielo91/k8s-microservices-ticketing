@@ -3,6 +3,7 @@ import request from 'supertest';
 import { OrderStatus } from '@gb-tickets/common';
 import { app } from '../../app';
 import { Order } from '../../models/order';
+import { Payment } from '../../models/payment';
 import { stripe } from '../../stripe';
 
 it('returns a 404 when purchasing an order that does not exist', async () => {
@@ -88,4 +89,9 @@ it('returns 201 with valid inputs', async () => {
   });
 
   expect(stripeCharge).toBeDefined();
+  const payment = await Payment.findOne({
+    orderId: order.id,
+    stripeId: stripeCharge!.id,
+  });
+  expect(payment).not.toBeNull();
 });
