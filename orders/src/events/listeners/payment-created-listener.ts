@@ -12,7 +12,7 @@ export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
   readonly subject: Subjects.PaymentCreated = Subjects.PaymentCreated;
   queueGroupName = queueGroupName;
 
-  async onMessage(data: PaymentCreatedEvent['data'], msg: Message): void {
+  async onMessage(data: PaymentCreatedEvent['data'], msg: Message) {
     const order = await Order.findById(data.orderId);
 
     if (!order) {
