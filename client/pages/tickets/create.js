@@ -1,14 +1,21 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useRequest from '../../hooks/useRequest';
+import Router from 'next/router';
 
 function NewTicket() {
-  const { register, handleSubmit, setValue, errors, getValues } = useForm();
-  const { doRequest, success } = useRequest({});
+  const { register, handleSubmit, setValue, getValues } = useForm();
+  const { doRequest, success, errors } = useRequest({});
 
   const onSubmit = (data) => {
-    console.log(data);
-    const result = doRequest({ url: '/api/tickets', method: 'POST', data });
+    doRequest({ url: '/api/tickets', method: 'POST', data });
   };
+
+  useEffect(() => {
+    if (success) {
+      Router.push('/');
+    }
+  }, [success]);
 
   const onBlur = () => {
     const currentValue = getValues('price');
@@ -38,6 +45,7 @@ function NewTicket() {
             onBlur={onBlur}
           />
         </div>
+        {errors}
         <button className="btn btn-primary" type="submit">
           Submit
         </button>
