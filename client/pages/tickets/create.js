@@ -1,8 +1,20 @@
 import { useForm } from 'react-hook-form';
 
 function NewTicket() {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { register, handleSubmit, setValue, errors, getValues } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  const onBlur = () => {
+    const currentValue = getValues('price');
+    const newValue = parseFloat(currentValue);
+    if (isNaN(newValue)) {
+      return;
+    }
+
+    setValue('price', newValue.toFixed(2));
+  };
 
   return (
     <div>
@@ -14,7 +26,13 @@ function NewTicket() {
         </div>
         <div className="form-group">
           <label>Price</label>
-          <input className="form-control" name="price" ref={register} />
+          <input
+            className="form-control"
+            name="price"
+            onBlur={onBlur}
+            ref={register}
+            onBlur={onBlur}
+          />
         </div>
         <button className="btn btn-primary" type="submit">
           Submit
