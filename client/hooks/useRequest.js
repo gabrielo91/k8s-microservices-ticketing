@@ -1,19 +1,24 @@
-import react, { useState } from "react";
-import axios from "axios";
+import react, { useState } from 'react';
+import axios from 'axios';
 
-const useRequest = ({ url, method, body }) => {
+const useRequest = ({ url, method, body, onSuccess }) => {
   const [errors, setErrors] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const doRequest = async () => {
+  const doRequest = async (localOptions) => {
     try {
       setErrors(null);
       const options = {
         method,
-        data: body,
         url,
+        data: body,
+        ...localOptions,
       };
       const response = await axios(options);
+
+      if (onSuccess) {
+        onSuccess(response.data);
+      }
 
       setSuccess(true);
       return response.data;

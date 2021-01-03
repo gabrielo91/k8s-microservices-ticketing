@@ -1,9 +1,13 @@
 import { useForm } from 'react-hook-form';
+import useRequest from '../../hooks/useRequest';
 
 function NewTicket() {
   const { register, handleSubmit, setValue, errors, getValues } = useForm();
+  const { doRequest, success } = useRequest({});
+
   const onSubmit = (data) => {
     console.log(data);
+    const result = doRequest({ url: '/api/tickets', method: 'POST', data });
   };
 
   const onBlur = () => {
