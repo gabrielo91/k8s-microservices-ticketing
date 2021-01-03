@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import Router from 'next/router';
+
 import useRequest from '../../hooks/useRequest';
 
 function TicketShow({ ticket }) {
@@ -9,7 +11,7 @@ function TicketShow({ ticket }) {
       ticketId: ticket.id,
     },
     onSuccess: (order) => {
-      console.log(order);
+      Router.push('/orders/[orderId]', `/orders/${order.id}`);
     },
   });
 
