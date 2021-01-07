@@ -8,8 +8,7 @@ metadata:
 
 spec:
   rules:
-    - host: ticketing.dev
-      http:
+    - http:
         paths:
           - pathType: Prefix
             path: /api/users/?(.*)
